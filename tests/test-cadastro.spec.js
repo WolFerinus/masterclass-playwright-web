@@ -39,7 +39,7 @@ test('Teste cadastro Qazando - Negativo: sem nome', async ({ page }) => {
 
 test('Teste cadastro Qazando - Negativo: e-mail vazio', async ({ page }) => {
   await abrirPagina(page);
-  await page.locator('#user').fill('João');
+  await page.locator('#user').fill('Jhon');
   await digitarSenha(page, '123456');
   await clicarBotaoCadastrar(page);
 
