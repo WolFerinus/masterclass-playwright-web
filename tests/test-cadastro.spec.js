@@ -1,12 +1,12 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 const { abrirPagina,
-   digitarEmail,
-    clicarBotaoCadastrar,
-     validarCadastroRealizado,
-      validarCadastroNegado,
-       digitarSenha
-       } = require('./page-cadastro');
+        digitarEmail,
+        clicarBotaoCadastrar,
+        validarCadastroRealizado,
+        validarCadastroNegado,
+        digitarSenha
+      } = require('./page-cadastro');
 
 function gerarEmailUnico() {
   return `usuario.${Date.now()}-${Math.random().toString(16).slice(2)}@example.com`;
@@ -25,8 +25,7 @@ test('Teste cadastro Qazando - Negativo: enviar vazio (campos obrigatórios)', a
   await abrirPagina(page);
   await clicarBotaoCadastrar(page);
 
-  await expect(page.getByText('O campo nome deve ser prenchido')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Cadastro realizado!' })).not.toBeVisible();
+  await validarCadastroNegado(page, 'O campo nome deve ser prenchido');
 });
 
 test('Teste cadastro Qazando - Negativo: sem nome', async ({ page }) => {
@@ -35,8 +34,7 @@ test('Teste cadastro Qazando - Negativo: sem nome', async ({ page }) => {
   await digitarSenha(page, '123456');
   await clicarBotaoCadastrar(page);
 
-  await expect(page.getByText('O campo nome deve ser prenchido')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Cadastro realizado!' })).not.toBeVisible();
+  await validarCadastroNegado(page, 'O campo nome deve ser prenchido');
 });
 
 test('Teste cadastro Qazando - Negativo: e-mail vazio', async ({ page }) => {
@@ -45,9 +43,9 @@ test('Teste cadastro Qazando - Negativo: e-mail vazio', async ({ page }) => {
   await digitarSenha(page, '123456');
   await clicarBotaoCadastrar(page);
 
-  await expect(page.getByText('O campo e-mail deve ser prenchido corretamente')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Cadastro realizado!' })).not.toBeVisible();
+  await validarCadastroNegado(page, 'O campo e-mail deve ser prenchido corretamente');
 });
+
 
 test('Teste cadastro Qazando - Negativo: e-mail inválido', async ({ page }) => {
   await abrirPagina(page);
@@ -56,8 +54,7 @@ test('Teste cadastro Qazando - Negativo: e-mail inválido', async ({ page }) => 
   await digitarSenha(page, '123456');
   await clicarBotaoCadastrar(page);
 
-  await expect(page.getByText('O campo e-mail deve ser prenchido corretamente')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Cadastro realizado!' })).not.toBeVisible();
+  await validarCadastroNegado(page, 'O campo e-mail deve ser prenchido corretamente');
 });
 
 test('Teste cadastro Qazando - Negativo: sem senha', async ({ page }) => {
@@ -66,6 +63,5 @@ test('Teste cadastro Qazando - Negativo: sem senha', async ({ page }) => {
   await digitarEmail(page, gerarEmailUnico());
   await clicarBotaoCadastrar(page);
 
-  await expect(page.getByText('O campo senha deve ter pelo menos 6 dígitos')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Cadastro realizado!' })).not.toBeVisible();
+  await validarCadastroNegado(page, 'O campo senha deve ter pelo menos 6 dígitos');
 });
